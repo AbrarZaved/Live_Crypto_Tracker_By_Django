@@ -1,0 +1,21 @@
+{% extends 'stock_app/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow rounded-4 p-4">
+    <h1 class="mb-3 text-center text-primary fw-bold">Welcome to Live Stock Tracker</h1>
+    <p class="text-center mb-4">Track your livestock and manage your farm with real-time insights and analytics.</p>
+
+    <div class="mb-3">
+      <label for="stockSelect" class="form-label fs-5 fw-semibold">Select the stocks you want to see</label>
+      <select id="stockSelect" class="form-select form-select-lg" multiple aria-label="Multiple select example">
+        <option value="1">Apple (AAPL)</option>
+        <option value="2">Google (GOOGL)</option>
+        <option value="3">Amazon (AMZN)</option>
+        <option value="4">Tesla (TSLA)</option>
+      </select>
+    </div>
+  </div>
+</div>
+{% endblock %}
