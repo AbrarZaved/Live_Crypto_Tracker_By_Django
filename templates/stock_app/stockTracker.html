@@ -1,43 +1,53 @@
 {% extends 'stock_app/main.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <div class="container mt-5">
   <div class="card shadow rounded-4">
     <div class="card-header bg-primary text-white text-center fs-4 fw-bold">
-      User Information
+      Stock Information
     </div>
     <div class="card-body p-4">
       <div class="table-responsive">
-        <table class="table table-hover align-middle">
+        <table class="table table-hover align-middle text-center">
           <thead class="table-light">
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Handle</th>
+              <th>Symbol</th>
+              <th>Current Price</th>
+              <th>Day High</th>
+              <th>Day Low</th>
+              <th>Previous Close</th>
+              <th>Change</th> <!-- New column -->
+              <th>Market Cap</th>
+              <th>Volume</th>
+              <th>Sector</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td><span class="badge bg-secondary">@mdo</span></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td><span class="badge bg-info text-dark">@fat</span></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>John</td>
-              <td>Doe</td>
-              <td><span class="badge bg-dark">@social</span></td>
-            </tr>
+            {% for stock in stock_data.values %}
+              <tr>
+                <td>{{ stock.symbol }}</td>
+                <td>₹{{ stock.currentPrice }}</td>
+                <td>₹{{ stock.dayHigh }}</td>
+                <td>₹{{ stock.dayLow }}</td>
+                <td>₹{{ stock.previousClose }}</td>
+                <td>
+                  {% if stock.change != "N/A" %}
+                    <span class="{% if stock.change > 0 %}text-success{% elif stock.change < 0 %}text-danger{% endif %}">
+                      ₹{{ stock.change }}
+                    </span>
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </td>
+                <td>{{ stock.marketCap|intcomma }}</td>
+                <td>{{ stock.volume|intcomma }}</td>
+                <td>{{ stock.sector }}</td>
+              </tr>
+            {% endfor %}
           </tbody>
+
         </table>
       </div>
     </div>

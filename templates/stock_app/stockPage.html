@@ -7,15 +7,23 @@
     <h1 class="mb-3 text-center text-primary fw-bold">Welcome to Live Stock Tracker</h1>
     <p class="text-center mb-4">Track your livestock and manage your farm with real-time insights and analytics.</p>
 
-    <div class="mb-3">
-      <label for="stockSelect" class="form-label fs-5 fw-semibold">Select the stocks you want to see</label>
-      <select id="stockSelect" class="form-select form-select-lg" multiple aria-label="Multiple select example">
-        <option value="1">Apple (AAPL)</option>
-        <option value="2">Google (GOOGL)</option>
-        <option value="3">Amazon (AMZN)</option>
-        <option value="4">Tesla (TSLA)</option>
-      </select>
-    </div>
+    <form method="POST" action="{% url "stockTracker" %}">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label for="stockSelect" class="form-label fs-5 fw-semibold">Select the stocks you want to see</label>
+        <select id="stockSelect" name="stockpicker" class="form-select form-select-lg" multiple aria-label="Multiple select example" style="height: 250px;">
+          {% for stock in stock_picker %}
+          <option value="{{ stock }}">{{ stock }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success px-4 py-2 fw-semibold rounded-pill shadow">
+          Submit
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}
