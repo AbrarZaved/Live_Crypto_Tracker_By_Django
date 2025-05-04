@@ -87,17 +87,16 @@ def fetch_stock_info(ticker, q):
 
 
 def crypto_quotes(request):
-    stockpicker = request.POST.getlist("symbols")
+    symbol_picker = request.POST.getlist("symbols")
     stock_data = {}
     start = time.time()
     q = queue.Queue()
     threads = []
 
-    for ticker in stockpicker:
+    for ticker in symbol_picker:
         thread = Thread(target=fetch_stock_info, args=(ticker, q))
         threads.append(thread)
         thread.start()
-
     for thread in threads:
         thread.join()
 
