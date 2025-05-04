@@ -1,0 +1,38 @@
+{% extends 'stock_app/main.html' %}
+{% load static %}
+{% load custom_filter %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg rounded-4 border-0 p-5 bg-dark text-light">
+    <h1 class="mb-3 text-center text-warning fw-bold">Live Crypto Quotes</h1>
+    <p class="text-center mb-4">Track real-time prices and market changes for your selected cryptocurrencies.</p>
+
+    <form method="POST" action="{% url 'crypto_quotes' %}">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label for="stockSelect" class="form-label fs-5 fw-semibold text-light">Choose Your Cryptos</label>
+        <select
+          id="stockSelect"
+          name="symbols"
+          class="form-select form-select-lg bg-dark text-light border-secondary"
+          multiple
+          aria-label="Select cryptocurrencies"
+          style="height: 250px;"
+        >
+          {% for symbol in symbols %}
+            <option value="{{ symbol }}">{{ symbol|remove }}</option>
+          {% endfor %}
+        </select>
+        <div class="form-text text p-1" style="color:white">Hold Ctrl (Cmd on Mac) to select multiple cryptos.</div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-warning text-dark fw-semibold px-5 py-2 rounded-pill shadow-sm">
+          Track Now
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ env_file = os.path.join(BASE_DIR, ".env")
 environ.Env.read_env(env_file)
 
 
-def stockPage(request):
+def crypto_home(request):
     start = time.time()
 
     symbols = cache.get("binance_crypto_symbols")
@@ -58,7 +58,7 @@ def stockPage(request):
 
     end = time.time()
     print(f"Time taken: {end - start}")
-    return render(request, "stock_app/stockPage.html", {"symbols": symbols})
+    return render(request, "stock_app/crypto_home.html", {"symbols": symbols})
 
 
 def fetch_stock_info(ticker, q):
@@ -86,7 +86,7 @@ def fetch_stock_info(ticker, q):
         q.put({ticker: {"error": str(e)}})
 
 
-def stockTracker(request):
+def crypto_quotes(request):
     stockpicker = request.POST.getlist("symbols")
     stock_data = {}
     start = time.time()
@@ -107,4 +107,4 @@ def stockTracker(request):
     end = time.time()
     print(f"Time taken: {end - start}")
 
-    return render(request, "stock_app/stockTracker.html", {"stock_data": stock_data})
+    return render(request, "stock_app/crypto_quotes.html", {"stock_data": stock_data})
