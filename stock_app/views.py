@@ -3,13 +3,23 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import time
 import queue
+from LiveStockTracker.settings import BASE_DIR
 import yfinance as yf
 from yahoo_fin.stock_info import *
+import environ
+import os
+import finnhub
+
+env = environ.Env()
+env_file = os.path.join(BASE_DIR, ".env")
+environ.Env.read_env(env_file)
 
 
 def stockPage(request):
-    stock_picker = tickers_nifty50()
-    return render(request, "stock_app/stockPage.html", {"stock_picker": stock_picker})
+    finnhub_client = finnhub.Client(api_key=env("API_KEY"))
+    crypto_picker = finnhub_client.crypto_symbols("BINANCE")
+    symbols = [item["symbol"] for item in crypto_picker][:50]
+    return render(request, "stock_app/stockPage.html", {"symbols": symbols})
 
 
 def fetch_stock_info(ticker, q):
@@ -42,7 +52,7 @@ def fetch_stock_info(ticker, q):
 
 
 def stockTracker(request):
-    stockpicker = request.POST.getlist("stockpicker")
+    stockpicker = request.POST.getlist("symbol")
     stock_data = {}
     start = time.time()
     q = queue.Queue()

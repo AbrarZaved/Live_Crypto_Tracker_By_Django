@@ -1,6 +1,6 @@
 {% extends 'stock_app/main.html' %}
 {% load static %}
-
+{% load custom_filter %}
 {% block content %}
 <div class="container mt-5">
   <div class="card shadow rounded-4 p-4">
@@ -11,9 +11,9 @@
       {% csrf_token %}
       <div class="mb-4">
         <label for="stockSelect" class="form-label fs-5 fw-semibold">Select the stocks you want to see</label>
-        <select id="stockSelect" name="stockpicker" class="form-select form-select-lg" multiple aria-label="Multiple select example" style="height: 250px;">
-          {% for stock in stock_picker %}
-          <option value="{{ stock }}">{{ stock }}</option>
+        <select id="stockSelect" name="symbols" class="form-select form-select-lg" multiple aria-label="Multiple select example" style="height: 250px;">
+          {% for symbol in symbols %}
+          <option value="{{ symbol }}">{{ symbol|remove }}</option>
           {% endfor %}
         </select>
       </div>
