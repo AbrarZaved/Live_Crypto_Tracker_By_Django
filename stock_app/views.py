@@ -69,6 +69,7 @@ def fetch_stock_info(ticker, q):
         q.put(
             {
                 ticker: {
+                    "s": ticker[8:],  # Symbol
                     "c": info.get("c"),  # Current price
                     "d": info.get("d"),  # Change
                     "dp": info.get("dp"),  # Percent change
