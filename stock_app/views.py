@@ -4,7 +4,7 @@ from django.shortcuts import render
 import time
 import queue
 from LiveStockTracker.settings import BASE_DIR
-
+from django.http import JsonResponse
 import environ
 import os
 import finnhub
@@ -16,14 +16,16 @@ environ.Env.read_env(env_file)
 
 
 def crypto_home(request):
-    start = time.time()
+    return render(request, "stock_app/crypto_home.html")  # No symbols here
 
+
+def get_crypto_symbols(request):
+    start = time.time()
     symbols = cache.get("binance_crypto_symbols")
     if not symbols:
         finnhub_client = finnhub.Client(api_key=env("API_KEY"))
         crypto_picker = finnhub_client.crypto_symbols("BINANCE")
         symbols = [item["symbol"] for item in crypto_picker]
-        # Filter top 50 or use a curated list
         top_crypto_symbols = [
             "BINANCE:BTCUSDT",
             "BINANCE:ETHUSDT",
@@ -50,15 +52,11 @@ def crypto_home(request):
             "BINANCE:AAVEUSDT",
             "BINANCE:EGLDUSDT",
             "BINANCE:VETUSDT",
-        ]
-
-        symbols = [symbol for symbol in symbols if symbol in top_crypto_symbols]
-        # Cache for 30 minutes (1800 seconds)
+        ]  # your static curated list
+        symbols = [s for s in symbols if s in top_crypto_symbols]
         cache.set("binance_crypto_symbols", symbols, timeout=1800)
-
     end = time.time()
-    print(f"Time taken: {end - start}")
-    return render(request, "stock_app/crypto_home.html", {"symbols": symbols})
+    return JsonResponse({"symbols": symbols, "load_time": end - start})
 
 
 def fetch_stock_info(ticker, q):
@@ -77,7 +75,7 @@ def fetch_stock_info(ticker, q):
                     "l": info.get("l"),  # Low price of the day
                     "o": info.get("o"),  # Open price of the day
                     "pc": info.get("pc"),  # Previous close price
-                    "t": info.get("t"),  # Timestamp
+                    "t": int(time.time()),  # Timestamp
                 }
             }
         )

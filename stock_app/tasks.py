@@ -26,7 +26,7 @@ def fetch_stock_info(ticker, q):
                     "l": info.get("l"),  # Low price of the day
                     "o": info.get("o"),  # Open price of the day
                     "pc": info.get("pc"),  # Previous close price
-                    "t": info.get("t"),  # Timestamp
+                    "t": int(time.time()),  # Timestamp
                 }
             }
         )
@@ -61,7 +61,7 @@ def crypto_quotes(self, symbols):
                 group_name,
                 {
                     "type": "send_crypto_update",
-                    "message": stock_data.get(symbol, {}),
+                    "message": stock_data,
                 },
             )
         )
