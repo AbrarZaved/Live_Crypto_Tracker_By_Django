@@ -6,7 +6,7 @@ from django.utils import crypto
 from prompt_toolkit import keys
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from channels.generic.websocket import AsyncWebsocketConsumer
-from stock_app.models import Crypto
+from crypto_app.models import Crypto
 
 
 class CryptoConsumer(AsyncWebsocketConsumer):
@@ -34,7 +34,7 @@ class CryptoConsumer(AsyncWebsocketConsumer):
             task = PeriodicTask.objects.create(
                 interval=schedule,
                 name="every-10-seconds",
-                task="stock_app.tasks.crypto_quotes",
+                task="crypto_app.tasks.crypto_quotes",
                 args=json.dumps([[crypto_symbol]]),  # Note: wrapped in another list
             )
 

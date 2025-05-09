@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import time
 import queue
-from LiveStockTracker.settings import BASE_DIR
+from LiveCryptoQuotes.settings import BASE_DIR
 from django.http import JsonResponse
 import environ
 import os
@@ -16,7 +16,7 @@ environ.Env.read_env(env_file)
 
 
 def crypto_home(request):
-    return render(request, "stock_app/crypto_home.html")  # No symbols here
+    return render(request, "crypto_app/crypto_home.html")  # No symbols here
 
 
 def get_crypto_symbols(request):
@@ -105,4 +105,4 @@ def crypto_quotes(request):
     end = time.time()
     print(f"Time taken: {end - start}")
 
-    return render(request, "stock_app/crypto_quotes.html", {"stock_data": stock_data})
+    return render(request, "crypto_app/crypto_quotes.html", {"stock_data": stock_data})
